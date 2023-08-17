@@ -1,1 +1,3 @@
 this is a first line of my file
+
+this is a line in master only
