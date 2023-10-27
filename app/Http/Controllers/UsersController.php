@@ -14,15 +14,25 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        return view('users.index',[
-            'search' => $search = $request->get('search'),
-            'users' => User::query()
-            ->when($search, function ($query, $search) {
+
+        return response()->json(
+            User::query()
+            ->when($search = $request->get('search'), function ($query, $search) {
                 $query->where('identification', 'like', "%$search%")
                     ->orWhere(DB::raw('CONCAT(first_name," ",last_name)'), 'like', "%$search%")
                     ->OrWhere('email','like', "%$search%");
-            })->get(),
-        ]);
+            })->get()
+        );
+
+        // return view('users.index',[
+        //     'search' => $search = $request->get('search'),
+        //     'users' => User::query()
+        //     ->when($search, function ($query, $search) {
+        //         $query->where('identification', 'like', "%$search%")
+        //             ->orWhere(DB::raw('CONCAT(first_name," ",last_name)'), 'like', "%$search%")
+        //             ->OrWhere('email','like', "%$search%");
+        //     })->get(),
+        // ]);
     }
 
     /**
